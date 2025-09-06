@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>AI Help Desk</title>
+<style>
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+}
+
+.navbar {
+    background-color: #ddd;
+    padding: 0.5em 0;
+    text-align: center;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+.navbar li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #bbb;
+}
+
+footer{
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+}
+</style>
+</head>
+<body>
+<header><h1>
+AI Questions
+</header></h1>
+    <div class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </div>
+<h2>Here's a snippet of our code, so that you can see what you can ask</h2>
+<h3>Credit: our AI piggybacks off of Google's Gemini AI
+<p><code><pre>            // Function to handle direct, pre-programmed answers
+            function handleDirectAnswers(prompt) {
+                const lowerCasePrompt = prompt.toLowerCase();
+
+                // Specific website navigation/feature questions
+                if (lowerCasePrompt.includes("where do i get books") || lowerCasePrompt.includes("borrow book") || lowerCasePrompt.includes("loan book")) {
+                    return "To borrow a book, please click the 'Borrow Book' button in the navigation bar or the 'Borrow Book' link on the homepage. You'll need to fill out a form.";
+                } else if (lowerCasePrompt.includes("how do i request help from a human") || lowerCasePrompt.includes("contact help") || lowerCasePrompt.includes("support")) {
+                    return "For direct help or to contact a human, please navigate to the 'Help' page in the navigation bar or visit our 'Help Forum'.";
+                } else if (lowerCasePrompt.includes("return book") || lowerCasePrompt.includes("give back book")) {
+                    return "To return a book, please visit the 'Book Return' page, accessible from the navigation bar.";
+                } else if (lowerCasePrompt.includes("search for books") || lowerCasePrompt.includes("find books")) {
+                    return "To search for books, please use the 'Search' feature in the navigation bar. You can also explore books by 'Genres'.";
+                } else if (lowerCasePrompt.includes("admin login") || lowerCasePrompt.includes("log in as admin")) {
+                    return "The 'Admin Login' option is available in the navigation bar for authorized personnel.";
+                } else if (lowerCasePrompt.includes("update log") || lowerCasePrompt.includes("what's new")) {
+                    return "You can find the latest updates and changes by clicking on the 'Update Log' link in the top navigation bar.";
+                } else if (lowerCasePrompt.includes("genres") || lowerCasePrompt.includes("types of books")) {
+                    return "Our book collection is categorized by genres such as Fiction, Science Fiction, Mystery, Fantasy, Informational Text, and Biography. You can explore these via the 'Genres' dropdown in the navigation.";
+                } else if (lowerCasePrompt.includes("borrowing period") || lowerCasePrompt.includes("how long can i keep a book") || lowerCasePrompt.includes("borrowing guidelines")) {
+                    return "Borrowing periods vary: Students can borrow for 2 weeks with one renewal, while Faculty can borrow for as long as needed with renewals, but are requested to keep books in stock. Books are typically dropped off on Wednesdays.";
+                }
+                // Handle "in stock" questions specifically
+                else if (lowerCasePrompt.includes("in stock") || lowerCasePrompt.includes("available") || lowerCasePrompt.includes("do you have") || lowerCasePrompt.includes("is book")) {
+                    return "I cannot directly check the live stock or availability of a specific book. Please visit the 'Search' page (library.html) to look for books, or contact the library directly for real-time availability.";
+                }
+                return null; // No direct answer found
+            }
+
+
+            // Define relevant keywords for the chatbot (for general LLM queries)
+            const relevantKeywords = [
+                "book", "library", "borrow", "genre", "author", "update log", "help forum",
+                "search", "admin", "return", "collection", "msc", "harry potter", "jk rowling",
+                "borrowing guidelines", "students", "faculty", "weeks", "online books", "credits",
+                "website", "how to", "what is", "where is", "can i", "tell me about", "fiction",
+                "science fiction", "mystery", "fantasy", "informational text", "biography",
+                "borrowing period", "renewal", "featured book", "contact", "rules", "policy",
+                "hours", "location", "story", "novel", "series", "character", "plot", "summary",
+                "recommendation", "new books", "popular books", "best books"
+            ];
+</pre></code></p>
+</body>
+</html>
