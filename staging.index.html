@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="pageTitle">MSC Book Collection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="staging.style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/cd38709ddf.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="Prepared Cooper.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="Prepared Cooper.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="Prepared Cooper.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+<!---CREDIT TO GOOGLE-->
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #ai-help-icon {
+            width: 60px; /* Smaller width */
+            height: 60px; /* Smaller height */
+            padding: 0; /* Remove default padding */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem; /* Adjust icon size */
+            bottom: 20px; /* Adjust position */
+            right: 20px; /* Adjust position */
+            background-color: #4c51bf; /* Blue color for the icon */
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 50;
+            transition: all 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Added opacity transition */
+            position: fixed;
+            color: white;
+            opacity: 1; /* Visible by default */
+            pointer-events: auto; /* Clickable by default */
+        }
+
+        #ai-help-icon:hover {
+            background-color: #6b46c1; /* Darker blue on hover */
+            transform: scale(1.1);
+        }
+
+        #ai-help-icon.hidden-icon {
+            opacity: 0;
+            pointer-events: none; /* Disable clicks when hidden */
+        }
+
+        /* Sidebar transition */
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%); /* Hidden by default */
+        }
+
+        .sidebar.open {
+            transform: translateX(0); /* Visible when open */
+        }
+
+        .chatbot-gradient-bg {
+            background-image: linear-gradient(to bottom right, #4c51bf, #6b46c1, #805ad5, #48bb78, #38b2ac);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #2d3748;
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #6b46c1;
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #553c9a; /* Darker purple on hover */
+        }
+
+        /* Oval text input */
+        .oval-input {
+            border-radius: 9999px; /* Large border-radius for oval shape */
+            padding: 0.75rem 1.5rem; /* Adjust padding for oval */
+            resize: none; /* Disable default textarea resize handle */
+            overflow: hidden; /* Hide scrollbar */
+            min-height: 48px; /* Minimum height for oval shape */
+            max-height: 150px; /* Max height before scrollbar appears */
+        }
+
+        /* Fancy send button */
+        .fancy-send-button {
+            background-image: linear-gradient(to right, #6b46c1, #4c51bf); /* Purple to blue gradient */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .fancy-send-button:hover {
+            background-image: linear-gradient(to right, #4c51bf, #6b46c1); /* Reverse gradient on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .fancy-send-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive adjustments for chatbot buttons */
+        @media (max-width: 640px) { /* Tailwind's sm breakpoint */
+            .chatbot-buttons-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .chatbot-buttons-container button {
+                width: 100%;
+                margin-bottom: 0.5rem; /* Space between stacked buttons */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 data-i18n="headerTitle"><img src="Prepared Cooper.ico" alt="MSC Book Collection Logo">MSC Book Collection</h1>
+    </header>
+    <div class="navbar2">
+        <ul>
+            <li><a href="updateLog.html" id="openUpdateLog"><i class="fa-solid fa-file-pen"></i><span data-i18n="updateLog">Update Log</span></a>
+                <div id="updateLogModal" class="update-log-modal">
+                    <div class="modal-content">
+                        <span class="close-button" id="closeUpdateLog">&times;</span>
+                        <iframe src="ClockCETPST.html" style="width: 100%; height: 25%; border: none; margin-bottom: 10px;"></iframe>
+                        <div id="updateLogContent">
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar">
+        <ul>
+            <li><a href="index.html" data-i18n="home">Home</a></li>
+<a href="https://gmail.com" style="color:#FF0000; font-weigt:bold;">Send Email</a>
+            <li>
+                <select class="non-interactive-select">
+                    <option selected data-i18n="genres">Genres</option>
+                    <option data-i18n="fiction">Fiction</option>
+                    <option data-i18n="scienceFiction">Science Fiction</option>
+                    <option data-i18n="mystery">Mystery</option>
+                    <option data-i18n="fantasy">Fantasy</option>
+                    <option data-i18n="informationalText">Informational Text</option>
+                    <option data-i18n="biography">Biography</option>
+                </select>
+            </li>
+            <li><a href="BookReturn.html" data-i18n="bookReturn">Book Return</a></li>
+            <li><a href="HelpForum.html" data-i18n="help">Help</a></li>
+            <li><a href="library.html" data-i18n="search">Search</a></li>
+            <li><a href="#" id="openBorrowForm" data-i18n="borrowBook">Borrow Book</a></li>
+            <li><a href="LoginFork.html" id="AdminLogin" data-i18n="login">Login<i class="fa-solid fa-user-lock"></i></a></li>
+        </ul>
+    </div>
+    <div id="mainContent">
+        <section>
+            <div class="container">
+                <img src="Header-IMG.jpg" alt="Welcome to MSC School Library" class="responsive">
+                <div class="centered" data-i18n="mscSchoolLibrary">MSC School Library</div>
+            </div>
+            <div class="body-containers-items">
+                <div class="latest-update">
+                    <h2 data-i18n="latestUpdate">Latest Update<i class="fa-solid fa-download"></i></h2>
+                    <p data-i18n="welcomeText">Welcome to the MSC School Library website!</p>
+                </div>
+                <div class="book-of-the-month">
+                    <h2 data-i18n="bookOfTheMonth">Book of the Month<i class="fa-solid fa-book"></i></h2>
+                    <article>
+                        <p data-i18n="featuredBook">This month's featured book is:</p>
+                        <ul>
+                            <li data-i18n="harryPotterTitle"><strong>Title:</strong> Harry Potter and the Deathly Hallows</li>
+                            <li data-i18n="jkRowling"><strong>Author:</strong> JK Rowling</li>
+                        </ul>
+                    </article>
+                </div>
+                <div class="delivery-chart">
+                    <h2 data-i18n="borrowingGuidelines">Borrowing Guidelines<i class="fa-solid fa-hand-holding-hand"></i></h2>
+                    <p data-i18n="borrowingInfo">Please see the chart below for information on borrowing periods for different user types:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="userType">User Type</th>
+                                <th data-i18n="maxBorrowingPeriod">Maximum Borrowing Period</th>
+                                <th data-i18n="renewalAllowed">Renewal Allowed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-i18n="students">Students</td>
+                                <td>2 weeks</td>
+                                <td data-i18n="yesOnce">Yes (once)</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="faculty">Faculty</td>
+                                <td>As long as needed:)</td>
+                                <td data-i18n="yesPleaseKeep">Yes, but please try to keep book in stock!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="explore-section">
+                    <h2 data-i18n="exploreCollection">Explore Our Collection<i class="fa fa-Search"></i></h2>
+                    <a href="library.html" class="explore-button" data-i18n="exploreBooks">Explore Books</a>
+                </div>
+                <div class="credits">
+                    <h2 data-i18n="credits">Credits</h2>
+                    <p>&copy; copyright @ 2024 <span>Coding credit: Atticus Herr</span> [all rights reserved!]</p>
+                    <p>5th grade class 2024-2025</p>
+                    <p><button class="online-books-button"><ul><li><a href="humans.txt">Click Me</a></li></ul></button></p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div id="borrowFormOverlay" class="overlay">
+        <div class="overlay-content">
+            <button type="button" class="close-button" id="closeBorrowForm">&times;</button>
+            <h2 data-i18n="borrowBookFormTitle">Borrow Book</h2>
+            <form id="borrowBookForm">
+                <div class="form-group">
+                    <label for="bookName" data-i18n="bookNameLabel">Book Name:</label>
+                    <input type="text" id="bookName" name="bookName" required>
+                </div>
+                <div class="form-group">
+                    <label for="genre" data-i18n="genreLabel">Genre (Optional):</label>
+                    <input type="text" id="genre" name="genre">
+                </div>
+                <div class="form-group">
+                    <label for="borrowerName" data-i18n="borrowerNameLabel">Person Borrowing:</label>
+                    <input type="text" id="borrowerName" name="borrowerName" required>
+                </div>
+                <p data-i18n="borrowNotice">NOTICE: Books are dropped off on Wednesday (exceptions can be made)! If the date is a day other than Wednesday, your book will be dropped off next Wednesday, regardless of your selected borrow duration. Write down the book name so you remember and try again on Wednesday, or try our Online Books (beta)!</p>
+                <div class="form-group">
+                    <label for="borrowDuration" data-i18n="borrowDurationLabel">Borrowing Duration:</label>
+                    <select id="borrowDuration" name="borrowDuration">
+                        <option value="1_week">1 Week</option>
+                        <option value="2_weeks">2 Weeks</option>
+                        <option value="3_weeks">3 Weeks</option>
+                        <option value="4_weeks">4 Weeks</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="disclaimer" data-i18n="disclaimerLabel">Disclaimer:</label>
+                    <textarea id="disclaimer" rows="3" readonly data-i18n="disclaimerText">I understand that I am responsible for the safe return of this book by the agreed-upon date. I will handle it with care and adhere to the library's borrowing policies.</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="signature" data-i18n="signatureLabel">Signature of Understanding:</label>
+                    <input type="text" id="signature" name="signature" required>
+                </div>
+                <button type="submit" data-i18n="submitRequest">Submit Borrow Request</button>
+                <button type="button" id="cancelBorrowForm" data-i18n="cancel">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <button id="ai-help-icon">
+        <h2>Δ</h2> </button>
+
+    <div id="chatbot-sidebar" class="sidebar fixed top-0 right-0 h-full w-full sm:w-96 bg-gray-900 shadow-2xl z-40 flex flex-col rounded-l-xl">
+        <div class="flex justify-between items-center p-4 bg-gray-800 rounded-tl-xl rounded-bl-none rounded-tr-none rounded-br-none">
+            <div class="flex items-center"> <img src="Gemini-Loading2.gif" alt="Google Gemini Logo" class="h-6 mr-2"> 
+                <h2 class="text-xl font-semibold text-white">AI Assistant</h2>
+            </div>
+            <button id="close-sidebar-btn" class="text-gray-400 hover:text-white transition duration-200 p-2 rounded-full hover:bg-gray-700">
+                <i class="fas fa-times text-xl"></i> </button>
+
+        </div>
+
+        <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-4 chat-messages chatbot-gradient-bg">
+            <div id="initial-image-placeholder" class="flex flex-col items-center justify-center h-full text-white text-center">
+<b><h2>Powered By:</h2></b>
+                <img src="Gemini-Logo.png" alt="AI Logo" class="rounded-full shadow-lg mb-4">
+                <p class="text-lg font-medium">How can I assist you today?</p>
+            </div>
+            </div>
+
+        <div class="p-4 bg-gray-800 flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-3 rounded-bl-xl rounded-tl-none rounded-tr-none rounded-br-none">
+            <textarea id="chat-input" class="oval-input flex-grow bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base w-full sm:w-auto" placeholder="Type your message..." rows="1"></textarea>
+                <button id="send-button" class="fancy-send-button text-white p-3 rounded-full shadow-md w-12 h-12 flex-shrink-0 flex items-center justify-center">
+                    <i class="fas fa-paper-plane text-xl"></i> </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+
+<!---CREDIT TO GOOGLE (generativelanguage.googleapis.com)-->
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const aiHelpIcon = document.getElementById('ai-help-icon');
+            const chatbotSidebar = document.getElementById('chatbot-sidebar');
+            const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-button');
+            const chatMessages = document.getElementById('chat-messages');
+            let initialImagePlaceholder = document.getElementById('initial-image-placeholder');
+            const brainstormButton = document.getElementById('brainstorm-button');
+            const summarizeButton = document.getElementById('summarize-button');
+
+            // Function to toggle sidebar visibility
+            function toggleSidebar() {
+                chatbotSidebar.classList.toggle('open');
+                // Toggle visibility of the AI help icon
+                if (chatbotSidebar.classList.contains('open')) {
+                    aiHelpIcon.classList.add('hidden-icon'); // Hide icon
+                } else {
+                    aiHelpIcon.classList.remove('hidden-icon'); // Show icon
+                }
+            }
+
+            // Event listeners for opening and closing sidebar
+            aiHelpIcon.addEventListener('click', toggleSidebar);
+            closeSidebarBtn.addEventListener('click', toggleSidebar);
+
+            // Function to resize textarea based on content
+            function resizeTextarea() {
+                chatInput.style.height = 'auto'; // Reset height to recalculate
+                chatInput.style.height = chatInput.scrollHeight + 'px'; // Set height to scrollHeight
+                // Ensure it doesn't exceed max-height defined in CSS
+                if (chatInput.scrollHeight > 150) {
+                    chatInput.style.overflowY = 'auto'; // Enable scroll if content exceeds max height
+                } else {
+                    chatInput.style.overflowY = 'hidden'; // Hide scroll otherwise
+                }
+            }
+
+            // Event listener for input to resize textarea
+            chatInput.addEventListener('input', resizeTextarea);
+
+            // Function to add a message to the chat display
+            function addMessage(sender, text, isThinking = false) {
+                // Remove initial image placeholder if it exists
+                if (initialImagePlaceholder) {
+                    initialImagePlaceholder.remove();
+                    initialImagePlaceholder = null; // Set to null to prevent re-addition
+                }
+
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('flex', 'mb-3');
+
+                if (sender === 'user') {
+                    messageDiv.classList.add('justify-end');
+                    messageDiv.innerHTML = `
+                        <div class="bg-blue-600 text-white p-3 rounded-xl rounded-br-none max-w-[80%] break-words shadow-md">
+                            ${text}
+                        </div>
+                    `;
+                } else { // sender === 'ai'
+                    messageDiv.classList.add('justify-start');
+                    messageDiv.innerHTML = `
+                        <div class="bg-gray-700 text-white p-3 rounded-xl rounded-tl-none max-w-[80%] break-words shadow-md">
+                            ${isThinking ? '<i class="fas fa-spinner fa-spin mr-2"></i>Thinking...' : text}
+                        </div>
+                    `;
+                }
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
+            }
+
+            // Function to handle direct, pre-programmed answers
+            function handleDirectAnswers(prompt) {
+                const lowerCasePrompt = prompt.toLowerCase();
+
+                // General Website & Navigation
+                if (lowerCasePrompt.includes("purpose of website") || lowerCasePrompt.includes("what is this website for") || lowerCasePrompt.includes("what is the purpose of the msc book collection website")) {
+                    return "This is the online platform for MSC School Library: explore, borrow, and find info on services.";
+                } else if (lowerCasePrompt.includes("navigate website") || lowerCasePrompt.includes("website sections") || lowerCasePrompt.includes("how to use website") || lowerCasePrompt.includes("how do i navigate through the different sections of the website")) {
+                    return "Use the top navigation bar: Home, Genres, Book Return, Help, Search, Borrow Book, Admin Login.";
+                } else if (lowerCasePrompt.includes("who can use library") || lowerCasePrompt.includes("who is library for") || lowerCasePrompt.includes("who can use the msc school library")) {
+                    return "The MSC School Library is primarily for MSC School students and faculty.";
+                } else if (lowerCasePrompt.includes("latest update") || lowerCasePrompt.includes("what's new") || lowerCasePrompt.includes("recent changes") || lowerCasePrompt.includes("where can i find the most recent updates or news about the library/website")) {
+                    return "See the latest updates on the 'Update Log' link in the top navigation.";
+                }
+
+                // Borrowing Books
+                else if (lowerCasePrompt.includes("where do i get books") || lowerCasePrompt.includes("borrow book") || lowerCasePrompt.includes("loan book") || lowerCasePrompt.includes("how to get a book") || lowerCasePrompt.includes("where to borrow") || lowerCasePrompt.includes("how do i borrow a book from the msc book collection")) {
+                    return "To borrow a book, click the 'Borrow Book' button in the navigation or on the homepage. Fill out the form.";
+                } else if (lowerCasePrompt.includes("borrow form info") || lowerCasePrompt.includes("borrow book requirements") || lowerCasePrompt.includes("what information do i need to fill out on the borrow book form")) {
+                    return "Book Name, your Name, Borrowing Duration, and Signature. Genre is optional.";
+                } else if (lowerCasePrompt.includes("borrowing period student") || lowerCasePrompt.includes("student loan duration") || lowerCasePrompt.includes("how long student") || lowerCasePrompt.includes("what is the maximum borrowing period for students")) {
+                    return "Students: 2 weeks, one renewal.";
+                } else if (lowerCasePrompt.includes("borrowing period faculty") || lowerCasePrompt.includes("faculty loan duration") || lowerCasePrompt.includes("how long faculty") || lowerCasePrompt.includes("can faculty keep books indefinitely")) {
+                    return "Faculty: as needed, with renewals (please try to keep in stock).";
+                } else if (lowerCasePrompt.includes("student renewal") || lowerCasePrompt.includes("can students renew their borrowed books")) {
+                    return "Yes, students can renew their borrowed books once.";
+                } else if (lowerCasePrompt.includes("faculty renewal") || lowerCasePrompt.includes("can faculty members renew their borrowed books")) {
+                    return "Yes, faculty can renew their books, but please try to keep them in stock.";
+                } else if (lowerCasePrompt.includes("drop off day") || lowerCasePrompt.includes("delivery day") || lowerCasePrompt.includes("when are books dropped off") || lowerCasePrompt.includes("on what day are borrowed books typically dropped off")) {
+                    return "Books are typically dropped off on Wednesdays. Exceptions can be made.";
+                } else if (lowerCasePrompt.includes("other day delivery") || lowerCasePrompt.includes("not wednesday drop off") || lowerCasePrompt.includes("what if i want a book dropped off on a day other than wednesday")) {
+                    return "If not Wednesday, your book will be dropped off next Wednesday. Consider 'Online Books (beta)'.";
+                } else if (lowerCasePrompt.includes("online books beta") || lowerCasePrompt.includes("what is online books") || lowerCasePrompt.includes("what does the online books beta option refer to")) {
+                    return "'Online Books (beta)' might offer immediate access if you can't wait for a physical drop-off.";
+                } else if (lowerCasePrompt.includes("disclaimer") || lowerCasePrompt.includes("borrowing agreement") || lowerCasePrompt.includes("terms and conditions") || lowerCasePrompt.includes("what is the disclaimer i need to agree to when borrowing")) {
+                    return "The disclaimer states you're responsible for safe return, care, and adherence to policies.";
+                } else if (lowerCasePrompt.includes("signature understanding") || lowerCasePrompt.includes("borrowing signature") || lowerCasePrompt.includes("do i have to provide a signature of understanding to borrow a book")) {
+                    return "Yes, a 'Signature of Understanding' is required on the borrowing form.";
+                } else if (lowerCasePrompt.includes("cancel form") || lowerCasePrompt.includes("what happens if cancel") || lowerCasePrompt.includes("what happens if i click cancel on the borrow book form")) {
+                    return "Clicking 'Cancel' closes the form without submitting your request.";
+                } else if (lowerCasePrompt.includes("user account") || lowerCasePrompt.includes("create account") || lowerCasePrompt.includes("login to borrow") || lowerCasePrompt.includes("do i need to create a user account to borrow books")) {
+                    return "No.";
+                } else if (lowerCasePrompt.includes("book rules") || lowerCasePrompt.includes("handling books") || lowerCasePrompt.includes("care for books") || lowerCasePrompt.includes("are there any rules about handling borrowed books")) {
+                    return "Yes, you agree to handle books with care and follow library policies as per the disclaimer.";
+                } else if (lowerCasePrompt.includes("lose book") || lowerCasePrompt.includes("lost book policy") || lowerCasePrompt.includes("what happens if i lose a borrowed book")) {
+                    return "You are responsible for the safe return of books. Please refer to the full borrowing policies or contact the library for details on lost books.";
+                }
+
+                // Returning Books
+                else if (lowerCasePrompt.includes("return book") || lowerCasePrompt.includes("give back book") || lowerCasePrompt.includes("how to return") || lowerCasePrompt.includes("where can i find the book return page")) {
+                    return "Return books via the 'Book Return' page in the navigation.";
+                }
+
+                // Searching & Exploring Books
+                else if (lowerCasePrompt.includes("search books") || lowerCasePrompt.includes("find books") || lowerCasePrompt.includes("explore collection") || lowerCasePrompt.includes("search bar") || lowerCasePrompt.includes("look for") || lowerCasePrompt.includes("by author") || lowerCasePrompt.includes("by title") || lowerCasePrompt.includes("how do i find a specific book on the website") || lowerCasePrompt.includes("is there a search bar or page to look for books") || lowerCasePrompt.includes("how can i explore the entire book collection") || lowerCasePrompt.includes("can i search for books by author or title directly")) {
+                    return "Use the 'Search' feature in the navigation or explore by 'Genres'.";
+                }
+
+                // Genres
+                else if (lowerCasePrompt.includes("genres") || lowerCasePrompt.includes("types of books") || lowerCasePrompt.includes("what genres") || lowerCasePrompt.includes("what different genres of books are available in the collection")) {
+                    return "We have Fiction, Science Fiction, Mystery, Fantasy, Informational Text, and Biography. Use the 'Genres' dropdown.";
+                } else if (lowerCasePrompt.includes("can i filter or browse books by a specific genre")) {
+                    return "Yes, you can browse by specific genres using the 'Genres' dropdown in the navigation.";
+                } else if (lowerCasePrompt.includes("why is the genres dropdown not a clickable link")) {
+                    return "The 'Genres' dropdown is a select element, designed to let you choose a genre directly rather than navigate to a separate page.";
+                } else if (lowerCasePrompt.includes("how do i view all the books within a particular genre")) {
+                    return "Select a genre from the 'Genres' dropdown to view books within that category.";
+                }
+
+                // Help & Support
+                else if (lowerCasePrompt.includes("request help") || lowerCasePrompt.includes("human help") || lowerCasePrompt.includes("contact help") || lowerCasePrompt.includes("support") || lowerCasePrompt.includes("talk to someone") || lowerCasePrompt.includes("how do i request help from a human") || lowerCasePrompt.includes("is there a forum or section for general inquiries or support")) {
+                    return "For human help, navigate to the 'Help' page or visit our 'Help Forum'.";
+                }
+
+                // Update Log & Time
+                else if (lowerCasePrompt.includes("update log modal clock") || lowerCasePrompt.includes("cet pst clock") || lowerCasePrompt.includes("why is there a clock (cet/pst) displayed within the update log modal")) {
+                    return "The clock shows CET and PST times to help users in different time zones understand when updates were posted.";
+                }
+
+                // Book of the Month
+                else if (lowerCasePrompt.includes("featured book") || lowerCasePrompt.includes("book of the month") || lowerCasePrompt.includes("what is the featured book of the month currently")) {
+                    return "This month's featured book is Harry Potter and the Deathly Hallows.";
+                } else if (lowerCasePrompt.includes("book of month author") || lowerCasePrompt.includes("who wrote harry potter") || lowerCasePrompt.includes("who is the author of harry potter and the deathly hallows")) {
+                    return "The author of Harry Potter and the Deathly Hallows is JK Rowling.";
+                } else if (lowerCasePrompt.includes("book of month update") || lowerCasePrompt.includes("how often book of month") || lowerCasePrompt.includes("how often is the book of the month updated or changed")) {
+                    return "The 'Book of the Month' is updated monthly.";
+                }
+
+                // Admin Login
+                else if (lowerCasePrompt.includes("admin login") || lowerCasePrompt.includes("log in admin") || lowerCasePrompt.includes("admin access") || lowerCasePrompt.includes("who can login") || lowerCasePrompt.includes("what is the admin login for")) {
+                    return "The 'Admin Login' is for authorized personnel, available in the navigation bar.";
+                }
+
+                // Website Credits & Information
+                else if (lowerCasePrompt.includes("humans.txt file") || lowerCasePrompt.includes("what is humans.txt")) {
+                    return "The 'humans.txt' file gives credit to the people who built or maintained the site.";
+                } else if (lowerCasePrompt.includes("prepared cooper.ico") || lowerCasePrompt.includes("logo image") || lowerCasePrompt.includes("favicon image") || lowerCasePrompt.includes("what is the prepared cooper.ico image used for the logo and favicon")) {
+                    return "'Prepared Cooper.ico' is the icon used for the MSC Book Collection logo and as the favicon.";
+                } else if (lowerCasePrompt.includes("header image") || lowerCasePrompt.includes("welcome image") || lowerCasePrompt.includes("what is the welcome to msc school library image at the top of the main content")) {
+                    return "That is the main header image, welcoming visitors to the MSC School Library website.";
+                } else if (lowerCasePrompt.includes("physical location") || lowerCasePrompt.includes("library location") || lowerCasePrompt.includes("is there a physical location for the msc school library")) {
+                    return "The MSC School Library has a physical location. This website serves as its online platform.";
+                }
+
+                // "In Stock" questions
+                else if (lowerCasePrompt.includes("in stock") || lowerCasePrompt.includes("available") || lowerCasePrompt.includes("do you have") || lowerCasePrompt.includes("is book")) {
+                    return "I cannot check live stock. Please visit the 'Search' page or contact the library for availability.";
+                }
+
+                return null; // No direct answer found
+            }
+
+
+            // Function to simulate AI response using Gemini API
+            async function getAiResponse(prompt) {
+                // 1. Try to find a direct answer first
+                const directAnswer = handleDirectAnswers(prompt);
+                if (directAnswer) {
+                    addMessage('ai', directAnswer);
+                    return;
+                }
+
+                // 2. If no direct answer, return the irrelevant message
+                addMessage('ai', `<p>That prompt is irrelevant.</p> <p>If you see an issue with our AI, go to our help centre!</p>`);
+            }
+
+            // Event listener for send button click
+            sendButton.addEventListener('click', () => {
+                const prompt = chatInput.value.trim();
+                if (prompt) {
+                    addMessage('user', prompt);
+                    getAiResponse(prompt);
+                    chatInput.value = ''; // Clear input
+                    resizeTextarea(); // Reset textarea height
+                }
+            });
+
+            // Event listener for brainstorm button click (these features will still use LLM)
+            // Note: These features will still call the Gemini API as they are explicit feature requests.
+            // If you want them to also return the "irrelevant" message for non-matching topics,
+            // you would need to add relevance checks within their respective functions.
+            brainstormButton.addEventListener('click', () => {
+                const topic = prompt("What topic do you want to brainstorm ideas for?");
+                if (topic) {
+                    const userPrompt = `Brainstorm a list of creative ideas for: ${topic}`;
+                    addMessage('user', `Brainstorming ideas for: "${topic}"`);
+                    getAiResponseForFeature(userPrompt);
+                } else {
+                    addMessage('ai', "No topic provided for brainstorming.");
+                }
+            });
+
+            // Event listener for summarize button click (these features will still use LLM)
+            // Note: These features will still call the Gemini API as they are explicit feature requests.
+            // If you want them to also return the "irrelevant" message for non-matching text,
+            // you would need to add relevance checks within their respective functions.
+            summarizeButton.addEventListener('click', () => {
+                const textToSummarize = prompt("Please paste the text you want me to summarize:");
+                if (textToSummarize) {
+                    const userPrompt = `Summarize the following text concisely: ${textToSummarize}`;
+                    addMessage('user', `Summarizing text: "${textToSummarize.substring(0, 50)}..."`); // Show snippet
+                    getAiResponseForFeature(userPrompt);
+                } else {
+                    addMessage('ai', "No text provided for summarization.");
+                }
+            });
+
+            // New function specifically for LLM-powered features (Brainstorm, Summarize)
+            // This function will bypass the relevance check for general chat,
+            // as these are explicit feature requests.
+            async function getAiResponseForFeature(prompt) {
+                addMessage('ai', '', true); // Show thinking indicator
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Leave as-is, Canvas will provide in runtime
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+
+                    // Remove thinking indicator
+                    const thinkingMessage = chatMessages.querySelector('.fa-spinner')?.closest('div');
+                    if (thinkingMessage) {
+                        thinkingMessage.parentElement.remove(); // Remove the whole message div
+                    }
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        addMessage('ai', text);
+                    } else {
+                        addMessage('ai', "Sorry, I couldn't get a response. Please try again.");
+                        console.error("Unexpected API response structure:", result);
+                    }
+                } catch (error) {
+                    // Remove thinking indicator
+                    const thinkingMessage = chatMessages.querySelector('.fa-spinner')?.closest('div');
+                    if (thinkingMessage) {
+                        thinkingMessage.parentElement.remove(); // Remove the whole message div
+                    }
+                    addMessage('ai', "An error occurred while fetching response. Please check your network connection.");
+                    console.error("Error calling Gemini API:", error);
+                }
+            }
+
+
+            // Allow sending message with Enter key (Shift + Enter for new line)
+            chatInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault(); // Prevent new line
+                    sendButton.click(); // Trigger send button click
+                }
+            });
+
+            // Initial resize of textarea
+            resizeTextarea();
+        });
+    </script>
+</body>
+</html>

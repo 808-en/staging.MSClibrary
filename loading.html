@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for a clean look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden; /* Prevent scrollbars during loading */
+        }
+
+        /* Keyframe animation for the spinning cube */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Keyframe animation for pulse effect */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        /* Apply spin animation to the loading cube */
+        .loading-cube {
+            animation: spin 2s linear infinite;
+        }
+
+        /* Apply pulse animation to the loading text */
+        .loading-text {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Ensure the main container fills the screen and is clickable */
+        .loading-container {
+            min-height: 100vh;
+            width: 100%;
+            cursor: pointer; /* Indicate it's interactive */
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center loading-container">
+    <div class="flex flex-col items-center justify-center p-8 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-3xl shadow-2xl max-w-sm w-full mx-4">
+        <div class="text-white text-5xl font-bold mb-6 drop-shadow-lg">
+            <span class="text-yellow-300">MSC</span><span class="text-green-400">Library</span>
+        </div>
+
+        <div class="relative w-24 h-24 mb-8">
+            <div class="loading-cube absolute inset-0 border-4 border-t-white border-r-white border-b-transparent border-l-transparent rounded-full"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.309L18.435 7 12 9.691 5.565 7 12 4.309zM4 8.709L10 11.418v6.873L4 15.582V8.709zm16 0V15.582L14 18.291v-6.873L20 8.709z"/>
+                </svg>
+            </div>
+        </div>
+
+        <p class="loading-text text-white text-xl md:text-2xl font-semibold mb-4 text-center drop-shadow-md">
+            LOADING...
+        </p>
+
+        <div id="gameTip" class="text-white text-sm opacity-80 text-center mt-4 p-2 bg-white bg-opacity-10 rounded-lg">
+            Error showing message. Error code: jtpcnst114
+        </div>
+    </div>
+
+    <script>
+        const tips = [
+            "Fact For Teachers: Ever loose this website? No problem! This website's files are all stored on a drive labeled 'Ng5-Rw'.",
+            "Tip: Find books by pressing either 'Search' or 'Explore Books'.",
+            "Fact: Updates will continue coming even after the school year 2024-2025!"
+        ];
+        let currentTipIndex = 0;
+
+        function displayNextTip() {
+            const gameTipElement = document.getElementById('gameTip');
+            gameTipElement.textContent = tips[currentTipIndex];
+            currentTipIndex = (currentTipIndex + 1) % tips.length; // Cycle te tips
+        }
+
+        displayNextTip();
+
+        document.body.addEventListener('click', displayNextTip);
+        document.body.addEventListener('touchstart', displayNextTip); // For touch devices
+
+        setTimeout(() => {
+            window.location.href = 'staging.index.html';
+        }, 5000);
+    </script>
+</body>
+</html>
